@@ -7,14 +7,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 
-# Configure o driver do Chrome
+# configuração do driver do Chrome
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
-# Defina a URL e acesse a página
 url = 'https://www.terabyteshop.com.br/hardware/placas-de-video'
 driver.get(url)
 
-# Função para extrair placas de cada página
+# função para extrair os dados de cada placa (por página)
 def extrair_placas(driver):
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.commerce_columns_item_inner')))
     placas = driver.find_elements(By.CSS_SELECTOR, 'div.commerce_columns_item_inner')
@@ -26,10 +25,10 @@ def extrair_placas(driver):
             print(f"Erro ao extrair marca: {e}")
             continue
 
-# Extraia placas da primeira página
+# extrai as placas da primeira página
 extrair_placas(driver)
 
-# Tente navegar para as próximas páginas e extrair placas
+# try para navegar nas próximas páginas e extrair as placas de vídeo
 while True:
     try:
         # Verifique se o botão "Próxima Página" está presente
@@ -37,22 +36,22 @@ while True:
             EC.element_to_be_clickable((By.CSS_SELECTOR, 'a.arrow-down btn btn-pdmore'))
         )
         print("Botão 'Próxima Página' encontrado.")
-        d
-        # Use ActionChains para mover até o botão e garantir que ele esteja visível
+        
+        # movendo até o botão para garantir que esteja visível
         actions = ActionChains(driver)
         actions.move_to_element(botao_proxima_pagina).perform()
         
-        # Clique no botão 'Próxima Página'
+        # clicando no botão "Próxima Página"
         botao_proxima_pagina.click()
         print("Botão 'Próxima Página' clicado.")
         
-        # Aguarde até que a nova página seja carregada
-        WebDriverWait(driver, 20).until(
+        # aguardar o carregamento da nova página
+        WebDriverWait(driver, 15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, 'div.commerce_columns_item_inner'))
         )
         print("Nova página carregada.")
         
-        # Extraia as placas da nova página
+        # extrai novamente as placas de vídeo
         extrair_placas(driver)
 
     except Exception as e:
@@ -62,5 +61,4 @@ while True:
             print("Não há mais páginas para navegar ou ocorreu um erro:", e)
         break
 
-# Encerre o driver
 driver.quit()
