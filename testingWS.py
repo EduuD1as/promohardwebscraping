@@ -19,8 +19,8 @@ def extrair_placas(driver):
     placas = driver.find_elements(By.CSS_SELECTOR, 'div.sc-27518a44-5')
     for placa in placas:
         try:
-            marca = placa.find_element(By.CSS_SELECTOR, 'span.sc-d79c9c3f-0')
-            print(marca.text)
+            nomeMarca = placa.find_element(By.CSS_SELECTOR, 'span.sc-d79c9c3f-0')
+            print(nomeMarca.text)
         except Exception as e:
             print(f"Erro ao extrair marca: {e}")
             continue
@@ -52,7 +52,7 @@ while True:
         extrair_placas(driver)
     except Exception as e:
         if "element could not be scrolled into view" in str(e):
-            print("O botão 'Próxima Página' não pôde ser encontrado. Finalizando a navegação.")
+            print("O botão 'Próxima Página' não pôde ser encontrado.")
         else:
             print("Não há mais páginas para navegar ou ocorreu um erro:", e)
         break
