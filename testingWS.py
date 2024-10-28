@@ -7,15 +7,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 
-# Configuração do driver do Chrome
+# configuração do driver do Chrome
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 url = 'https://www.kabum.com.br/hardware/placa-de-video-vga'
 driver.get(url)
 
-# Função para extrair os dados de cada placa (por página)
+# função para extrair os dados de cada placa (por página)
 def extrair_placas(driver):
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.sc-27518a44-5')))
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.sc-27518a44-5')))
     placas = driver.find_elements(By.CSS_SELECTOR, 'div.sc-27518a44-5')
     for placa in placas:
         try:
@@ -25,27 +25,23 @@ def extrair_placas(driver):
             print(f"Erro ao extrair marca: {e}")
             continue
 
-# Extrai as placas da primeira página
+# extrai as placas da primeira página
 extrair_placas(driver)
 
-# Tente navegar para as próximas páginas e extrair as placas de vídeo
+# try para navegar nas próximas páginas e extrair as placas de vídeo
 while True:
     try:
-        # Verifique se o botão "Próxima Página" está presente
+        # valida se o botão "Próxima Página" está presente (clicável)
         botao_proxima_pagina = WebDriverWait(driver, 15).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, 'a.nextLink'))
         )
         print("Botão 'Próxima Página' encontrado.")
         
-        # Movendo até o botão para garantir que esteja visível
-        actions = ActionChains(driver)
-        actions.move_to_element(botao_proxima_pagina).perform()
-        
-        # Clique no botão "Próxima Página"
+        # clicando no botão "Próxima Página"
         botao_proxima_pagina.click()
         print("Botão 'Próxima Página' clicado.")
         
-        # Aguarde até que a nova página seja carregada
+        # delay para carregar a nova página
         WebDriverWait(driver, 15).until(EC.staleness_of(botao_proxima_pagina))
         WebDriverWait(driver, 15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, 'div.sc-27518a44-5'))
