@@ -6,16 +6,21 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.firefox import GeckoDriverManager
 
+<<<<<<< HEAD:kabumVga.py
 # Configuração do driver do Firefox
 driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()))
+=======
+# configuração do driver do Chrome
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+>>>>>>> 4a8ae7c6b88b6910ff7eb9e91cbb7369bf73cc01:testingWS.py
 
 url = 'https://www.kabum.com.br/hardware/placa-de-video-vga'
 driver.get(url)
 driver.maximize_window()
 
-# Função para extrair os dados de cada placa (por página)
+# função para extrair os dados de cada placa (por página)
 def extrair_placas(driver):
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.sc-27518a44-5')))
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.sc-27518a44-5')))
     placas = driver.find_elements(By.CSS_SELECTOR, 'div.sc-27518a44-5')
     for placa in placas:
         try:
@@ -25,18 +30,24 @@ def extrair_placas(driver):
             print(f"Erro ao extrair marca: {e}")
             continue
 
-# Extrai as placas da primeira página
+# extrai as placas da primeira página
 extrair_placas(driver)
 
-# Tente navegar para as próximas páginas e extrair as placas de vídeo
+# try para navegar nas próximas páginas e extrair as placas de vídeo
 while True:
     try:
+<<<<<<< HEAD:kabumVga.py
         # Verifique se o botão "Próxima Página" está presente (clicável)
         botao_proxima_pagina = WebDriverWait(driver, 20).until(
+=======
+        # valida se o botão "Próxima Página" está presente (clicável)
+        botao_proxima_pagina = WebDriverWait(driver, 15).until(
+>>>>>>> 4a8ae7c6b88b6910ff7eb9e91cbb7369bf73cc01:testingWS.py
             EC.element_to_be_clickable((By.CSS_SELECTOR, 'a.nextLink'))
         )
         print("Botão 'Próxima Página' encontrado.")
         
+<<<<<<< HEAD:kabumVga.py
         # Usando JavaScript para clicar diretamente no botão
         driver.execute_script("arguments[0].click();", botao_proxima_pagina)
         print("Botão 'Próxima Página' clicado.")
@@ -44,6 +55,15 @@ while True:
         # Aguardar o carregamento da nova página
         WebDriverWait(driver, 20).until(EC.staleness_of(botao_proxima_pagina))
         WebDriverWait(driver, 20).until(
+=======
+        # clicando no botão "Próxima Página"
+        botao_proxima_pagina.click()
+        print("Botão 'Próxima Página' clicado.")
+        
+        # delay para carregar a nova página
+        WebDriverWait(driver, 15).until(EC.staleness_of(botao_proxima_pagina))
+        WebDriverWait(driver, 15).until(
+>>>>>>> 4a8ae7c6b88b6910ff7eb9e91cbb7369bf73cc01:testingWS.py
             EC.presence_of_element_located((By.CSS_SELECTOR, 'div.sc-27518a44-5'))
         )
         print("Nova página carregada.")
