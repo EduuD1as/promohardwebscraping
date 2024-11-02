@@ -21,11 +21,7 @@ def extrair_placas(driver):
         try:
             # Extraindo o nome da placa
             nomePlaca = placa.find_element(By.CSS_SELECTOR, 'span.sc-d79c9c3f-0')
-            print(f"Nome: {nomePlaca.text}")
-            
-            # Extraindo o preço da placa
-            precoPlaca = placa.find_element(By.CSS_SELECTOR, 'span.sc-3b515ca1-2')
-            print(f"Preço: {precoPlaca.text}")
+            print(nomePlaca.text)
         except Exception as e:
             print(f"Erro ao extrair dados: {e}")
             continue
