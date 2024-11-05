@@ -19,7 +19,7 @@ def extrair_placas(driver):
     placas = driver.find_elements(By.CSS_SELECTOR, 'div.sc-27518a44-5')
     for placa in placas:
         try:
-            # extraindo o nome da placa
+            # extraindo o nome e preco da placa
             nomePlaca = placa.find_element(By.CSS_SELECTOR, 'span.sc-d79c9c3f-0')
             print(nomePlaca.text)
 
