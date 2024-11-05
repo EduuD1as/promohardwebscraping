@@ -1,13 +1,13 @@
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 
-# configuração do driver do Firefox
-driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()))
+# configuração do driver do Chrome
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 url = 'https://www.kabum.com.br/hardware/placa-de-video-vga'
 driver.get(url)
@@ -22,13 +22,9 @@ def extrair_placas(driver):
             # extraindo o nome da placa
             nomePlaca = placa.find_element(By.CSS_SELECTOR, 'span.sc-d79c9c3f-0')
             print(nomePlaca.text)
-            
-            # extraindo o preço da placa
-            try:
-                precoPlaca = placa.find_element(By.CSS_SELECTOR, 'span.sc-3b515ca1-2')
-                print(f"Preço: {precoPlaca.text}")
-            except Exception as e:
-                print(f"Erro ao extrair preço: {e}")
+
+            precoPlaca = placa.find_element(By.CSS_SELECTOR, 'span.sc-e5003a21-2.jfrbst.priceCard')
+            print(precoPlaca.text)
 
         except Exception as e:
             print(f"Erro ao extrair dados: {e}")
