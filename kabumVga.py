@@ -11,19 +11,21 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 url = 'https://www.kabum.com.br/hardware/placa-de-video-vga'
 driver.get(url)
-driver.maximize_window()
 
 # função para extrair os dados de cada placa (por página)
 def extrair_placas(driver):
-    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.sc-27518a44-5')))
-    placas = driver.find_elements(By.CSS_SELECTOR, 'div.sc-27518a44-5')
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'a.sc-27518a44-4.kVoakD.productLink')))
+    placas = driver.find_elements(By.CSS_SELECTOR, 'a.sc-27518a44-4.kVoakD.productLink')
     for placa in placas:
         try:
-            # extraindo o nome e preco da placa
-            nomePlaca = placa.find_element(By.CSS_SELECTOR, 'span.sc-d79c9c3f-0')
+            imgPlaca = placa.find_element(By.CSS_SELECTOR, 'img.imageCard')
+            imgPlaca = imgPlaca.get_attribute('src')
+            print(imgPlaca)
+            
+            nomePlaca = placa.find_element(By.CSS_SELECTOR, 'span.sc-d79c9c3f-0.nlmfp.sc-27518a44-9.iJKRqI.nameCard')
             print(nomePlaca.text)
 
-            precoPlaca = placa.find_element(By.CSS_SELECTOR, 'span.sc-e5003a21-2.jfrbst.priceCard')
+            precoPlaca = placa.find_element(By.CSS_SELECTOR, 'span.sc-57f0fd6e-2.hjJfoh.priceCard')
             print(precoPlaca.text)
 
         except Exception as e:
@@ -40,7 +42,7 @@ while True:
         botao_proxima_pagina = WebDriverWait(driver, 15).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, 'a.nextLink'))
         )
-        print("Botão 'Próxima Página' encontrado.")
+        print("Botão 'Próxima Página' encontrado.")     
         
         # usando JS para clicar diretamente no botão
         driver.execute_script("arguments[0].click();", botao_proxima_pagina)
@@ -49,7 +51,7 @@ while True:
         # aguarda o carregamento da nova página
         WebDriverWait(driver, 15).until(EC.staleness_of(botao_proxima_pagina))
         WebDriverWait(driver, 15).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'div.sc-27518a44-5'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'a.sc-27518a44-4.kVoakD.productLink'))
         )
         print("Nova página carregada.")
         
